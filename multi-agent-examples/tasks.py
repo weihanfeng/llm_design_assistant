@@ -3,7 +3,7 @@ from textwrap import dedent
 from datetime import date
 
 
-class TripTasks():
+class DesignBriefTasks():
 
   def identify_task(self, agent, origin, cities, interests, range):
     return Task(description=dedent(f"""

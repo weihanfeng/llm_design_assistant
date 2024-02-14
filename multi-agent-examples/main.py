@@ -1,52 +1,64 @@
-from crewai import Crew
+from crewai import Crew, Task
 from textwrap import dedent
-from trip_agents import TripAgents
-from trip_tasks import TripTasks
+from archi_agents import Architecture_idea_exploration_agent
+from langchain.llms import OpenAI
 
-from dotenv import load_dotenv
-load_dotenv()
+import os
+from dotenv import load_dotenv, find_dotenv
 
-class TripCrew:
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(os.path.join(BASEDIR, '.env.example'))
+print("BASEDIR: ", BASEDIR)
+print(os.getenv('OPENAI_API_KEY'))
 
-  def __init__(self, origin, cities, date_range, interests):
-    self.cities = cities
-    self.origin = origin
-    self.interests = interests
-    self.date_range = date_range
+llm = OpenAI(model_name="gpt-3.5-turbo")
+
+brief = dedent("""
+The client is a local government that is looking to build a new community center in Kallang, Singapore. 
+The community center will be a multi-purpose building that will be used for a variety of activities such as sports, meetings, and events.
+The community center should foster a sense of community for the residents of Kallang and should be a place where people can come together and socialize.
+The community center should be designed to be sustainable and environmentally friendly.
+The community center should be designed to be accessible to all residents, including those with disabilities.
+The community center should be designed to be flexible and adaptable to different uses.
+""")
+
+task1 = dedent(f"""
+Given the design brief below, try to understand the task and generate questions to research. 
+
+The brief: {brief}
+""")
+
+task2 = dedent(f"""
+Given the questions, research the answers to the questions and summarize the findings.          
+""")
+
+task3 = dedent(f"""
+Given the design brief and the research findings, generate 10 vastly different architecture design concepts which are unique, interesting, innovative and meets the requirements of the brief.
+The brief:
+{brief}
+               """)
+              
+tasks = [task1, task2, task3]
+class ArchitectureDesignCrew:
+
+  def __init__(self, tasks):
+    self.tasks = tasks
 
   def run(self):
-    agents = TripAgents()
-    tasks = TripTasks()
-
-    city_selector_agent = agents.city_selection_agent()
-    local_expert_agent = agents.local_expert()
-    travel_concierge_agent = agents.travel_concierge()
-
-    identify_task = tasks.identify_task(
-      city_selector_agent,
-      self.origin,
-      self.cities,
-      self.interests,
-      self.date_range
-    )
-    gather_task = tasks.gather_task(
-      local_expert_agent,
-      self.origin,
-      self.interests,
-      self.date_range
-    )
-    plan_task = tasks.plan_task(
-      travel_concierge_agent, 
-      self.origin,
-      self.interests,
-      self.date_range
-    )
-
+    agents = Architecture_idea_exploration_agent(llm=llm)
+    tasks = self.tasks
+    brief_understanding_agent = agents.architecture_brief_question_agent()
+    research_assistant_agent = agents.research_assistant()
+    concept_generation_agent = agents.concept_generation_agent()
+    agents = [brief_understanding_agent, research_assistant_agent, concept_generation_agent]
+    task1 = Task(description=tasks[0], agent=brief_understanding_agent)
+    task2 = Task(description=tasks[1], agent=research_assistant_agent)
+    task3 = Task(description=tasks[2], agent=concept_generation_agent)
+    tasks = [task1, task2, task3]
+    
     crew = Crew(
-      agents=[
-        city_selector_agent, local_expert_agent, travel_concierge_agent
-      ],
-      tasks=[identify_task, gather_task, plan_task],
+      agents=agents,
+      tasks=tasks,
       verbose=True
     )
 
@@ -54,28 +66,6 @@ class TripCrew:
     return result
 
 if __name__ == "__main__":
-  print("## Welcome to Trip Planner Crew")
-  print('-------------------------------')
-  location = input(
-    dedent("""
-      From where will you be traveling from?
-    """))
-  cities = input(
-    dedent("""
-      What are the cities options you are interested in visiting?
-    """))
-  date_range = input(
-    dedent("""
-      What is the date range you are interested in traveling?
-    """))
-  interests = input(
-    dedent("""
-      What are some of your high level interests and hobbies?
-    """))
-  
-  trip_crew = TripCrew(location, cities, date_range, interests)
-  result = trip_crew.run()
-  print("\n\n########################")
-  print("## Here is you Trip Plan")
-  print("########################\n")
+  design_crew = ArchitectureDesignCrew(tasks)
+  result = design_crew.run()
   print(result)
