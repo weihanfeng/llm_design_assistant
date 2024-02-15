@@ -8,10 +8,8 @@ from dotenv import load_dotenv, find_dotenv
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASEDIR, '.env.example'))
-print("BASEDIR: ", BASEDIR)
-print(os.getenv('OPENAI_API_KEY'))
 
-llm = OpenAI(model_name="gpt-3.5-turbo")
+llm = OpenAI(model_name="gpt-4-0125-preview")
 
 brief = dedent("""
 The client is a local government that is looking to build a new community center in Kallang, Singapore. 
@@ -24,16 +22,24 @@ The community center should be designed to be flexible and adaptable to differen
 
 task1 = dedent(f"""
 Given the design brief below, try to understand the task and generate questions to research. 
-
+The questions should be focused on understanding the actual content of the brief, the site, the people, the culture, the surrounding environment, climate and so on.
+The answer to the questions should be readily searchable on the internet.
+               
 The brief: {brief}
 """)
 
 task2 = dedent(f"""
-Given the questions, research the answers to the questions and summarize the findings.          
+Given the questions, research the answers to the questions and summarize the findings.
+You must always use the tool to search the internet to find the answers to the questions.
+
+After you have obtained the findings, output the summary incorporating all the research findings. Your final answer is the summary.         
 """)
 
 task3 = dedent(f"""
-Given the design brief and the research findings, generate 10 vastly different architecture design concepts which are unique, interesting, innovative and meets the requirements of the brief.
+Given the design brief and the research findings, generate 5 vastly different architecture design concepts which are unique, interesting, innovative and meets the requirements of the brief.
+The design concepts should make use of research findings.
+The design concepts should be focus on describing the actual form of the design, to help with visualization.
+
 The brief:
 {brief}
                """)
