@@ -37,3 +37,12 @@ class Architecture_idea_exploration_agent():
         verbose=True,
         llm=self.llm,
         allow_delegation=False,)
+  
+  def text_to_image_prompt_agent(self):
+    return Agent(
+        role='Text to image prompt agent',
+        goal="""Given the design concepts, generate a positive prompt and a negative prompt for each concept, the prompts will be the inputs to a text to image model to generate images of the concepts.""",
+        backstory="""The prompts should be brief and focused on describing the actual form of the design, to help with visualization. Give your output as a list of json objects in the format {"concept": "name of concept", "positive": "positive prompt", "negative": "negative prompt"}.""",
+        verbose=True,
+        llm=self.llm,
+        allow_delegation=False,)

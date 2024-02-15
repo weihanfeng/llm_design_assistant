@@ -43,8 +43,15 @@ The design concepts should be focus on describing the actual form of the design,
 The brief:
 {brief}
                """)
-              
-tasks = [task1, task2, task3]
+
+task4 = dedent(f"""
+Given the design concepts, generate a positive prompt and a negative prompt for each concept, the prompts will be the inputs to a text to image model to generate images of the concepts.
+The prompts should be brief and focused on describing the actual form of the design, to help with visualization.
+Give your output as a list of json objects in the format: 
+{{"concept": "name of concept", "positive": "positive prompt", "negative": "negative prompt"}}."""
+)
+               
+tasks = [task1, task2, task3, task4]
 class ArchitectureDesignCrew:
 
   def __init__(self, tasks):
@@ -56,11 +63,13 @@ class ArchitectureDesignCrew:
     brief_understanding_agent = agents.architecture_brief_question_agent()
     research_assistant_agent = agents.research_assistant()
     concept_generation_agent = agents.concept_generation_agent()
-    agents = [brief_understanding_agent, research_assistant_agent, concept_generation_agent]
+    text_to_image_prompt_agent = agents.text_to_image_prompt_agent()
+    agents = [brief_understanding_agent, research_assistant_agent, concept_generation_agent, text_to_image_prompt_agent]
     task1 = Task(description=tasks[0], agent=brief_understanding_agent)
     task2 = Task(description=tasks[1], agent=research_assistant_agent)
     task3 = Task(description=tasks[2], agent=concept_generation_agent)
-    tasks = [task1, task2, task3]
+    task4 = Task(description=tasks[3], agent=concept_generation_agent)
+    tasks = [task1, task2, task3, task4]
     
     crew = Crew(
       agents=agents,
