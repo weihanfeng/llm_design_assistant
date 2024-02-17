@@ -1,15 +1,18 @@
 from crewai import Crew, Task
 from textwrap import dedent
 from archi_agents import Architecture_idea_exploration_agent
-from langchain.llms import OpenAI
+from langchain_community.chat_models import ChatOpenAI
+from utils import extract_and_parse_list_of_dicts
 
 import os
 from dotenv import load_dotenv, find_dotenv
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
+
 load_dotenv(os.path.join(BASEDIR, '.env.example'))
 
-llm = OpenAI(model_name="gpt-4-0125-preview")
+llm = ChatOpenAI(model_name="gpt-4-0125-preview")
+# llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125")
 
 brief = dedent("""
 The client is a local government that is looking to build a new community center in Kallang, Singapore. 
@@ -84,3 +87,6 @@ if __name__ == "__main__":
   design_crew = ArchitectureDesignCrew(tasks)
   result = design_crew.run()
   print(result)
+  
+  ideas = extract_and_parse_list_of_dicts(result)
+  print(ideas)
