@@ -2,7 +2,7 @@ from crewai import Crew, Task
 from textwrap import dedent
 from archi_agents import Architecture_idea_exploration_agent
 from langchain_community.chat_models import ChatOpenAI
-from utils import extract_and_parse_list_of_dicts
+from utils import extract_and_parse_list_of_dicts, generate_image_from_prompts, convert_image, generate_image_mask
 
 import os
 from dotenv import load_dotenv, find_dotenv
@@ -86,7 +86,18 @@ class ArchitectureDesignCrew:
 if __name__ == "__main__":
   design_crew = ArchitectureDesignCrew(tasks)
   result = design_crew.run()
-  print(result)
+  # print(result)
   
-  ideas = extract_and_parse_list_of_dicts(result)
-  print(ideas)
+  parsed_list_of_dicts = extract_and_parse_list_of_dicts(result)[0]
+
+  # Example image generation
+  num_images = 5
+  image_path = "../sample_site.jpg"
+  output_path = "generated_images/"
+  model = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
+
+  image = convert_image(image_path)
+  mask = generate_image_mask(image, 0.3, 0.23, 0.87, 0.65)
+  # display_mask_with_image(image, mask)
+
+  generate_image_from_prompts(parsed_list_of_dicts, image, mask, num_images, output_path, model)

@@ -126,6 +126,44 @@ def resize_generated_image_to_original(generated_img, original_img):
 
     return resized_generated_img
 
+def generate_image_from_prompts(prompt_list, image, mask, num_output_images, output_path, model):
+    pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
+        model,
+        torch_dtype=torch.float16,)
+    pipe.to("cuda")
+
+    for idea in prompt_list:
+        positive = idea["positive"]
+        negative = idea["negative"]
+        # make folder for each idea with the name of the concept
+        concept = idea["concept"]
+        concept_path = output_path + concept + "/"
+        os.makedirs(concept_path, exist_ok=True)
+
+        # Generate images
+        for i in range(num_output_images):
+            generated_image = pipe(
+                prompt=positive,
+                negative_prompt=negative,
+                image=image,
+                mask_image=mask,
+                guidance_scale=15,
+                num_inference_steps=20,  # steps between 15 and 30 work well for us
+                strength=0.99,).images[0]
+            # Resize the generated image to match the dimensions of the original image
+            generated_image = resize_generated_image_to_original(generated_image, image)
+
+            print(f"Image generation successful for concept: '{concept}' ({i+1}/{num_output_images})")
+            
+            # Save the generated image
+            generated_image.save(concept_path + f"generated_image_{i}.png")
+        
+        # Save the positive and negative prompts as text file in the same folder
+        with open(concept_path + "prompts.txt", "w") as file:
+            file.write(f"Positive prompt: {positive}\nNegative prompt: {negative}")
+        
+    print("Image generation complete.")
+
 if __name__ == "__main__":
     # Example usage
     text = """Some unneeded text before [
@@ -148,39 +186,5 @@ if __name__ == "__main__":
     mask = generate_image_mask(image, 0.3, 0.23, 0.87, 0.65)
     # display_mask_with_image(image, mask)
 
-    pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
-        model,
-        torch_dtype=torch.float16,)
-
-    pipe.to("cuda")
-
-    for idea in parsed_list_of_dicts:
-        positive = idea["positive"]
-        negative = idea["negative"]
-        # make folder for each idea with the name of the concept
-        concept = idea["concept"]
-        concept_path = output_path + concept + "/"
-        os.makedirs(concept_path, exist_ok=True)
-
-        # Generate images
-        for i in range(num_images):
-            generated_image = pipe(
-                prompt=positive,
-                negative_prompt=negative,
-                image=image,
-                mask_image=mask,
-                guidance_scale=15,
-                num_inference_steps=20,  # steps between 15 and 30 work well for us
-                strength=0.99,).images[0]
-            # Resize the generated image to match the dimensions of the original image
-            generated_image = resize_generated_image_to_original(generated_image, image)
-
-            print(f"Image generation successful for concept: '{concept}' ({i+1}/{num_images})")
-            
-            # Save the generated image
-            generated_image.save(concept_path + f"generated_image_{i}.png")
-        
-        # Save the positive and negative prompts as text file in the same folder
-        with open(concept_path + "prompts.txt", "w") as file:
-            file.write(f"Positive prompt: {positive}\nNegative prompt: {negative}")
+    generate_image_from_prompts(parsed_list_of_dicts, image, mask, num_images, output_path, model)
 
