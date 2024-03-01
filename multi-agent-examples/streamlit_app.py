@@ -90,6 +90,6 @@ if st.sidebar.button("Submit"):
                     image = Image.open(img_path)
                     col.image(image, use_column_width=True)
                 
-            # Clear the folder after displaying the images, but do not delete the parent folder
-            os.rmdir(subfolder_path)
-        
+    # Clear the folder after displaying the images, but do not delete the parent folder
+    os.system(f"rm -r {output_path}")
+    
