@@ -91,5 +91,9 @@ if st.sidebar.button("Submit"):
                     col.image(image, use_column_width=True)
                 
     # Clear the folder after displaying the images, but do not delete the parent folder
-    os.system(f"rm -r {output_path}")
+    for subfolder in os.listdir(output_path):
+        subfolder_path = os.path.join(output_path, subfolder)
+        if os.path.isdir(subfolder_path):
+            for f in os.listdir(subfolder_path):
+                os.remove(os.path.join(subfolder_path, f))
     
