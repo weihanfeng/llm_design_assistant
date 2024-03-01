@@ -63,7 +63,7 @@ if st.sidebar.button("Submit"):
         output_path = "generated_images/"
         model = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
 
-        # generate_image_from_prompts(parsed_list_of_dicts, uploaded_image, uploaded_mask, num_images, output_path, model)
+        generate_image_from_prompts(parsed_list_of_dicts, uploaded_image, uploaded_mask, num_images, output_path, model)
         
         # Display the generated images
         for subfolder in os.listdir(output_path):
@@ -90,6 +90,6 @@ if st.sidebar.button("Submit"):
                     image = Image.open(img_path)
                     col.image(image, use_column_width=True)
                 
-        # Clear the folder after displaying the images
-    os.system(f"rm -r {output_path}")
-    
+            # Clear the folder after displaying the images, but do not delete the parent folder
+            os.rmdir(subfolder_path)
+        
