@@ -127,6 +127,14 @@ def resize_generated_image_to_original(generated_img, original_img):
 
     return resized_generated_img
 
+def initialize_pipeline(model):
+    # Initialize the pipeline
+    pipe = StableDiffusionInpaintPipeline.from_pretrained(
+        model,
+        torch_dtype=torch.float16,)
+    pipe.to("cuda")
+    return pipe
+
 def generate_image_from_prompts(prompt_list, image, mask, num_output_images, output_path, model):
     pipe = StableDiffusionXLInpaintPipeline.from_pretrained(
         model,

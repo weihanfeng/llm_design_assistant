@@ -90,10 +90,11 @@ if st.sidebar.button("Submit"):
                     image = Image.open(img_path)
                     col.image(image, use_column_width=True)
                 
-    # Clear the folder after displaying the images, but do not delete the parent folder
+    # Clear the folder after displaying the images, but do not delete the parent folder, which is the output_path
     for subfolder in os.listdir(output_path):
         subfolder_path = os.path.join(output_path, subfolder)
         if os.path.isdir(subfolder_path):
             for f in os.listdir(subfolder_path):
                 os.remove(os.path.join(subfolder_path, f))
+            os.rmdir(subfolder_path)
     
