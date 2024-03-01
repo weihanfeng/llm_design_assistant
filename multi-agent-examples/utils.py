@@ -133,6 +133,8 @@ def generate_image_from_prompts(prompt_list, image, mask, num_output_images, out
         torch_dtype=torch.float16,)
     pipe.to("cuda")
 
+    # make output directory if it doesn't exist
+    os.makedirs(output_path, exist_ok=True)
     for idea in prompt_list:
         positive = idea["positive"]
         negative = idea["negative"]
