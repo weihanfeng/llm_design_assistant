@@ -1,9 +1,7 @@
-from crewai import Crew, Task
 from textwrap import dedent
-from archi_agents import Architecture_idea_exploration_agent
 from langchain_community.chat_models import ChatOpenAI
 from utils import extract_and_parse_list_of_dicts, generate_image_from_prompts, convert_image, generate_image_mask
-from  archi_tasks import task1, task2, generate_task_with_brief, task4
+from  archi_tasks import task1, task2, task3, task4, generate_task_with_brief
 from archi_crew import ArchitectureDesignCrew
 
 import os
@@ -16,16 +14,15 @@ load_dotenv(os.path.join(BASEDIR, '.env.example'))
 llm = ChatOpenAI(model_name="gpt-4-0125-preview")
 # llm = ChatOpenAI(model_name="gpt-3.5-turbo-0125")
 
-brief = dedent("""
+design_brief = dedent("""
 The client is a local government that is looking to build a new community center in Kallang, Singapore. 
 The community center will be a multi-purpose building that will be used for a variety of activities such as sports, meetings, and events.
 The community center should foster a sense of community for the residents of Kallang and should be a place where people can come together and socialize.
 The community center should be designed to be sustainable and environmentally friendly.
-The community center should be designed to be accessible to all residents, including those with disabilities.
 The community center should be designed to be flexible and adaptable to different uses.
 """)
 
-tasks = [task1, task2, generate_task_with_brief(brief), task4]
+tasks = [generate_task_with_brief(task1, design_brief), task2, generate_task_with_brief(task3, design_brief), task4]
 
 
 if __name__ == "__main__":

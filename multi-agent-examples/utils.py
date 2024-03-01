@@ -103,9 +103,10 @@ def display_mask_with_image(image, mask):
     # Composite the mask over the image
     combined = Image.alpha_composite(image, mask_rgba)
 
-    # save the image in a temp file
-    combined_path = "temp_overlay.png"
-    combined.save(combined_path)
+    # # save the image in a temp file
+    # combined_path = "temp_overlay.png"
+    # combined.save(combined_path)
+    return combined
 
 def resize_generated_image_to_original(generated_img, original_img):
     """
