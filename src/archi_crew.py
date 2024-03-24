@@ -10,12 +10,12 @@ class ArchitectureDesignCrew:
     self.tasks = tasks
     self.llm = llm
 
-  def run(self):
+  def run(self, num_questions=5, num_concepts=5):
     agents = Architecture_idea_exploration_agent(llm=self.llm)
     tasks = self.tasks
-    brief_understanding_agent = agents.architecture_brief_question_agent()
+    brief_understanding_agent = agents.architecture_brief_question_agent(num_questions=num_questions)
     research_assistant_agent = agents.research_assistant()
-    concept_generation_agent = agents.concept_generation_agent()
+    concept_generation_agent = agents.concept_generation_agent(num_concepts=num_concepts)
     text_to_image_prompt_agent = agents.text_to_image_prompt_agent()
     agents = [brief_understanding_agent, research_assistant_agent, concept_generation_agent, text_to_image_prompt_agent]
     task1 = Task(description=tasks[0], agent=brief_understanding_agent)
