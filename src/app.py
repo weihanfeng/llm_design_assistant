@@ -56,7 +56,8 @@ if st.sidebar.button("Submit"):
         # Make num_images an input field
         output_path = "generated_images/"
         # model = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
-        model = "models/stable-diffusion-xl-1.0-inpainting-0.1"
+        # get HF_HOME from environment variable and append to model
+        model = os.getenv("HF_HOME") + "/diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
 
         generate_image_from_prompts(parsed_list_of_dicts, uploaded_image, uploaded_mask, num_images, output_path, model)
         

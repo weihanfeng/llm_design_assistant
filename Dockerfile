@@ -19,4 +19,5 @@ python3 -c "from huggingface_hub import snapshot_download; snapshot_download(rep
 COPY . /app
 
 # Set the entry point
-ENTRYPOINT ["python3", "app.py"]
+# streamlit run --server.enableCORS=false --server.enableXsrfProtection=false --server.enableWebsocketCompression=false streamlit_app.py
+ENTRYPOINT ["streamlit", "run", "--server.enableCORS=false", "--server.enableXsrfProtection=false", "--server.enableWebsocketCompression=false", "app.py"]
