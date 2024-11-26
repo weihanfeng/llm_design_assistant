@@ -1,11 +1,16 @@
 # Base image
-FROM python:3.10-slim
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+
+# Install Python
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Set environment variables
-ENV HF_HOME=/app/models
+ENV HF_HOME=/models
 
 # Create models folder in the working directory
 RUN mkdir -p $HF_HOME

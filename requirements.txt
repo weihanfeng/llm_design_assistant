@@ -8,3 +8,5 @@ huggingface-hub==0.20.3
 tavily-python==0.3.1
 streamlit==1.31.1
 streamlit-drawable-canvas==0.9.3
+transformers==4.37.2
+python-dotenv==1.0.1

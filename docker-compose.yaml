@@ -5,11 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    runtime: nvidia
     ports:
       - "8501:8501"
     volumes:
       - .:/app  # Map the current directory to the /app directory in the container
     environment:
-      - HF_HOME=/app/models
+      - HF_HOME=/models
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     container_name: stable_diffusion_app
     entrypoint: ["streamlit", "run", "--server.enableCORS=false", "--server.enableXsrfProtection=false", "--server.enableWebsocketCompression=false", "src/app.py"]
