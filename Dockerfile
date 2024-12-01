@@ -12,6 +12,8 @@ WORKDIR /app
 # Set environment variables
 ENV HF_HOME=/models
 ENV MODEL=diffusers/stable-diffusion-xl-1.0-inpainting-0.1
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=all
 
 # Create models folder in the working directory
 RUN mkdir -p $HF_HOME

@@ -8,8 +8,8 @@ fi
 
 # Download the model
 echo "Downloading the model from repo: $MODEL..."
-python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='$MODEL', cache_dir='$HF_HOME')"
+python3 -c "from huggingface_hub import snapshot_download; snapshot_download(repo_id='$MODEL')"
 
 # Start the Streamlit server
 echo "Starting the Streamlit server..."
-exec streamlit run --server.enableCORS=false --server.enableXsrfProtection=false --server.enableWebsocketCompression=false app.py
+exec streamlit run --server.enableCORS=false --server.enableXsrfProtection=false --server.enableWebsocketCompression=false src/app.py

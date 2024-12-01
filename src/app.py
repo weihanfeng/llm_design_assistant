@@ -18,10 +18,10 @@ from archi_crew import ArchitectureDesignCrew
 # Env set up
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
-load_dotenv(os.path.join(BASEDIR, ".env.example"))
+load_dotenv(os.path.join(BASEDIR, ".env"))
 
 llm = ChatOpenAI(model_name="gpt-4-0125-preview")
-model = os.getenv("MODEL")
+repo_id = os.getenv("MODEL")
 
 # Set page layout to wide
 st.set_page_config(layout="wide")
@@ -68,7 +68,7 @@ if uploaded_image is not None:
         resized_image = image
 
     # Display the image with interaction
-    st.subheader("Interactive Mask Selection")
+    st.subheader("Select site") 
 
     # Create columns for the clear button and drawing tool selection
     col1, col2 = st.columns([1, 5])
@@ -172,10 +172,10 @@ if uploaded_image is not None:
         mask = Image.fromarray(mask_array)
 
         # Display the image and mask together
-        st.subheader("Selected Mask")
-        st.image(
-            display_mask_with_image(image, mask), caption="The site", use_column_width=True
-        )
+        # st.subheader("Selected Mask")
+        # st.image(
+        #     display_mask_with_image(image, mask), caption="The site", use_column_width=True
+        # )
 
 else:
     st.session_state["last_rect"] = None
@@ -210,7 +210,7 @@ if (
         # model = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
         # get HF_HOME from environment variable and append to model
         generate_image_from_prompts(
-            parsed_list_of_dicts, image, mask, num_images, output_path, model
+            parsed_list_of_dicts, image, mask, num_images, output_path, repo_id
         )
 
         for subfolder in os.listdir(output_path):
