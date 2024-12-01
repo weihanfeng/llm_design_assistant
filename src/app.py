@@ -21,6 +21,7 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(BASEDIR, ".env.example"))
 
 llm = ChatOpenAI(model_name="gpt-4-0125-preview")
+model = os.getenv("MODEL")
 
 # Set page layout to wide
 st.set_page_config(layout="wide")
@@ -208,11 +209,6 @@ if (
         output_path = "generated_images/"
         # model = "diffusers/stable-diffusion-xl-1.0-inpainting-0.1"
         # get HF_HOME from environment variable and append to model
-        model = (
-            os.getenv("HF_HOME")
-            + "/models--diffusers--stable-diffusion-xl-1.0-inpainting-0.1/snapshots/115134f363124c53c7d878647567d04daf26e41e/"
-        )
-
         generate_image_from_prompts(
             parsed_list_of_dicts, image, mask, num_images, output_path, model
         )
