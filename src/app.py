@@ -15,10 +15,8 @@ from utils import (
 from archi_tasks import task1, task2, task3, task4, generate_task_with_brief
 from archi_crew import ArchitectureDesignCrew
 
-# Env set up
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-
-load_dotenv(os.path.join(BASEDIR, ".env"))
+# load environment variables from the /app/.env file
+load_dotenv()
 
 llm = ChatOpenAI(model_name="gpt-4-0125-preview")
 repo_id = os.getenv("MODEL")

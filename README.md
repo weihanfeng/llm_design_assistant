@@ -21,17 +21,23 @@ This repository hosts the Architecture Design Concept Generator, an application 
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/architecture-design-concept-generator.git
+   git clone https://github.com/weihanfeng/llm_design_assistant.git
    ```
 
-2. Navigate to the project directory:
+2. Navigate to the project directory
 
-3. Run the docker image
+3. Create .env at the project directory with the following API keys:
+    ```
+    OPENAI_API_KEY=<your_openai_api_key>
+    TAVILY_API_KEY=<your_tavily_api_key>
+    ```
+
+4. Run the docker image
     ```sh
     docker-compose up
     ```
 
-4. Make sure the port is correctly mapped to the host machine. The application should now be accessible at `http://localhost:8581`.
+5. Make sure the port is correctly mapped to the host machine. The application should now be accessible at `http://localhost:8501`.
 
 ## Contributing
 
