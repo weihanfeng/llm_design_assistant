@@ -1,12 +1,14 @@
 # Architecture Design Concept Generator
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ISs6DnVcj_Y?si=VODUyYh_dvHiEWx7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 This repository hosts the Architecture Design Concept Generator, an application designed to aid in the creation of architectural design concepts. It leverages large language models (LLMs) to gather contextual information and uses image models to generate visual design concepts from a site image, an image mask, and a design brief.
 
 ## Features
 
 - **Contextual Design Concepts**: Searches the web with LLMs for information relevant to the provided architectural brief and site image, ensuring generated concepts fit the context.
 
-- **Image Mask Support**: Uses an image mask to focus design generation on specific areas of the site image.
+- **Image Mask Selection**: Users can draw a selection on the image to specify the area of interest for the design concept.
 
 - **Image Generation**: Transforms textual concepts into architectural design images through advanced image models.
 
