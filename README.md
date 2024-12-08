@@ -48,5 +48,3 @@ Contributions are welcome! If you'd like to help improve the project, please sub
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for more details.
-
-This application streamlines the process of generating architectural design concepts by combining contextual web searches with advanced image generation, all tailored by your design brief and site specifics.
